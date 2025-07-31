@@ -1,8 +1,48 @@
-import { Widget } from '../types/types';
-import { Loader2, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { JSX, useState } from 'react';
+import {
+  Loader2,
+  Trash2,
+  Sun,
+  CloudSun,
+  Cloud,
+  Cloudy,
+  CloudRain,
+  CloudSnow,
+  CloudFog,
+  Bolt,
+  Snowflake,
+  Umbrella,
+} from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
+import { Switch } from './ui/switch';
+import { Label } from './ui/label';
+import type { Widget } from '../types/types';
+
+const WeatherIcon = ({ condition }: { condition?: string }) => {
+  const iconMap: Record<string, JSX.Element> = {
+    Clear: <Sun className="h-8 w-8 text-yellow-400" />,
+    'Partly cloudy': <CloudSun className="h-8 w-8 text-yellow-300" />,
+    Cloudy: <Cloud className="h-8 w-8 text-gray-400" />,
+    Fog: <CloudFog className="h-8 w-8 text-gray-300" />,
+    'Light drizzle': <CloudRain className="h-8 w-8 text-blue-300" />,
+    'Moderate drizzle': <CloudRain className="h-8 w-8 text-blue-400" />,
+    'Dense drizzle': <CloudRain className="h-8 w-8 text-blue-500" />,
+    'Freezing drizzle': <CloudSnow className="h-8 w-8 text-blue-200" />,
+    'Light rain': <Umbrella className="h-8 w-8 text-blue-400" />,
+    'Moderate rain': <Umbrella className="h-8 w-8 text-blue-500" />,
+    'Heavy rain': <Umbrella className="h-8 w-8 text-blue-600" />,
+    'Light snow': <Snowflake className="h-8 w-8 text-blue-200" />,
+    'Moderate snow': <Snowflake className="h-8 w-8 text-blue-300" />,
+    'Heavy snow': <Snowflake className="h-8 w-8 text-blue-400" />,
+    'Snow grains': <Snowflake className="h-8 w-8 text-blue-200" />,
+    'Rain showers': <CloudRain className="h-8 w-8 text-blue-400" />,
+    Thunderstorm: <Bolt className="h-8 w-8 text-yellow-500" />,
+    'Thunderstorm with hail': <Bolt className="h-8 w-8 text-yellow-600" />,
+  };
+
+  return condition ? iconMap[condition] : <Cloudy className="h-8 w-8 text-gray-400" />;
+};
 
 export default function WeatherWidget({
   widget,
@@ -11,8 +51,8 @@ export default function WeatherWidget({
   widget: Widget;
   onDelete: (id: string) => void;
 }) {
-  console.log(widget)
   const [isDeleting, setIsDeleting] = useState(false);
+  const [useLocalTime, setUseLocalTime] = useState(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -23,11 +63,29 @@ export default function WeatherWidget({
     }
   };
 
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString(useLocalTime ? 'de-DE' : 'en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: useLocalTime ? 'Europe/Berlin' : 'GMT',
+    });
+  };
+
   return (
-    <Card>
-      <CardHeader className="flex flex-row justify-between items-center">
-        <CardTitle className="capitalize">{widget.location}</CardTitle>
-        <Button variant="ghost" size="icon" onClick={handleDelete} disabled={isDeleting}>
+    <Card className="relative">
+      <CardHeader className="flex flex-row justify-between items-center pb-2">
+        <CardTitle className="capitalize flex items-center gap-2">
+          <WeatherIcon condition={widget.weather?.conditions} />
+          {widget.location}
+        </CardTitle>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="hover:bg-destructive/10"
+        >
           {isDeleting ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
@@ -35,13 +93,27 @@ export default function WeatherWidget({
           )}
         </Button>
       </CardHeader>
-      <CardContent>
+
+      <CardContent className="pt-0">
         {widget.weather ? (
-          <div className="space-y-2">
-            <div className="text-4xl font-bold">{widget.weather.temperature}°C</div>
-            <div className="text-muted-foreground">{widget.weather.conditions}</div>
-            <div className="text-sm text-muted-foreground">
-              Updated: {new Date(widget.weather.time).toLocaleTimeString()}
+          <div className="space-y-3">
+            <div className="flex items-end gap-2">
+              <span className="text-4xl font-bold">{widget.weather.temperature}°C</span>
+              <span className="text-muted-foreground pb-1">{widget.weather.conditions}</span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="text-sm text-muted-foreground">
+                Updated: {formatTime(widget.weather.time)}
+              </div>
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="timezone-toggle"
+                  checked={useLocalTime}
+                  onCheckedChange={setUseLocalTime}
+                />
+                <Label htmlFor="timezone-toggle">{useLocalTime ? 'DE Time' : 'GMT'}</Label>
+              </div>
             </div>
           </div>
         ) : (
