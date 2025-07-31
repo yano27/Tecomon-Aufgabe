@@ -1,7 +1,5 @@
 import axios from 'axios';
-import NodeCache from 'node-cache';
-
-const cache = new NodeCache({ stdTTL: 300 }); // 5-minute cache
+import { weatherCache } from '../cache/weatherCache';
 
 interface WeatherData {
   temperature: number;
@@ -9,29 +7,39 @@ interface WeatherData {
   conditions: string;
 }
 
+const CACHE_TTL = 300;
+
 export async function getWeather(location: string): Promise<WeatherData> {
-  const cached = cache.get<WeatherData>(location);
-  if (cached) return cached;
+  const cachedData = weatherCache.get<WeatherData>(location);
+  if (cachedData) {
+    console.log('Returning cached data for', location);
+    return cachedData;
+  }
+  try {
+    const { lat, lon } = getCoordinates(location);
 
-  const { lat, lon } = getCoordinates(location);
+    const response = await axios.get(`https://api.open-meteo.com/v1/forecast`, {
+      params: {
+        latitude: lat,
+        longitude: lon,
+        current_weather: true,
+        timezone: 'auto',
+      },
+    });
 
-  const response = await axios.get(`https://api.open-meteo.com/v1/forecast`, {
-    params: {
-      latitude: lat,
-      longitude: lon,
-      current_weather: true,
-      timezone: 'auto',
-    },
-  });
+    const weatherData: WeatherData = {
+      temperature: response.data.current_weather.temperature,
+      time: response.data.current_weather.time,
+      conditions: parseWeatherCode(response.data.current_weather.weathercode),
+    };
 
-  const weatherData: WeatherData = {
-    temperature: response.data.current_weather.temperature,
-    time: response.data.current_weather.time,
-    conditions: parseWeatherCode(response.data.current_weather.weathercode),
-  };
-
-  cache.set(location, weatherData);
-  return weatherData;
+    weatherCache.set(location, weatherData, CACHE_TTL);
+    console.log('Cached fresh data for', location);
+    return weatherData;
+  } catch (error) {
+    console.error('Weather API error:', error);
+    throw new Error('Failed to fetch weather');
+  }
 }
 
 // Helper functions
