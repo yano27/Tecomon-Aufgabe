@@ -1,0 +1,76 @@
+@import 'tailwindcss';
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: hsl(0 0% 100%);
+    --foreground: hsl(240 10% 3.9%);
+    --background-hover: hsl(0 0% 95%);
+
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(240 10% 3.9%);
+    --card-info: hsl(160 80% 96%);
+    --card-info-foreground: hsl(160 80% 30%);
+
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(240 10% 3.9%);
+
+    --primary: hsl(160 100% 30%);
+    --primary-foreground: hsl(0 0% 98%);
+
+    --secondary: hsl(160 30% 96%);
+    --secondary-foreground: hsl(160 100% 25%);
+    --secondary-background: hsl(160 20% 94%);
+
+    --footer: hsl(160 30% 98%);
+    --footer-foreground: hsl(160 100% 25%);
+
+    --muted: hsl(160 10% 95%);
+    --muted-foreground: hsl(160 10% 18%);
+
+    --accent: hsl(160 60% 90%);
+    --accent-foreground: hsl(160 100% 30%);
+
+    --destructive: hsl(0 62% 50%);
+    --destructive-foreground: hsl(0 0% 98%);
+
+    --border: hsl(160 10% 85%);
+    --input: hsl(160 10% 90%);
+
+    --ring: hsl(160 60% 60%);
+    --radius: 0.3rem;
+
+    --sidebar: hsl(160 100% 25%);
+    --sidebar-linear-start: hsl(160 100% 25%);
+    --sidebar-linear-end: hsl(160 100% 30%);
+    --sidebar-foreground: hsl(0 0% 100%);
+
+    --highlight: hsl(160 80% 90%);
+    --highlight-hover: hsl(160 80% 85%);
+    --sidebar-primary: hsl(160 100% 30%);
+    --sidebar-primary-foreground: hsl(0 0% 98%);
+    --sidebar-accent: hsl(160 30% 96%);
+    --sidebar-accent-foreground: hsl(160 100% 30%);
+    --sidebar-border: hsl(160 10% 85%);
+    --sidebar-ring: hsl(160 60% 60%);
+
+    --cmdk-list-height: 500px;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
