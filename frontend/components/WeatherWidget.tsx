@@ -15,8 +15,6 @@ import {
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
-import { Switch } from './ui/switch';
-import { Label } from './ui/label';
 import type { Widget } from '../types/types';
 
 const WeatherIcon = ({ condition }: { condition?: string }) => {
@@ -52,7 +50,6 @@ export default function WeatherWidget({
   onDelete: (id: string) => void;
 }) {
   const [isDeleting, setIsDeleting] = useState(false);
-  const [useLocalTime, setUseLocalTime] = useState(false);
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -63,12 +60,14 @@ export default function WeatherWidget({
     }
   };
 
+  // To FormatTime correctly based on each city timezone
+  // OpenMateoAPI - time deliver -2hour diff -- `timezone: auto`
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleTimeString(useLocalTime ? 'de-DE' : 'en-GB', {
+    return date.toLocaleTimeString('de-DE', {
       hour: '2-digit',
       minute: '2-digit',
-      timeZone: useLocalTime ? 'Europe/Berlin' : 'GMT',
+      timeZone: 'Europe/Berlin',
     });
   };
 
@@ -105,14 +104,6 @@ export default function WeatherWidget({
             <div className="flex items-center justify-between">
               <div className="text-sm text-muted-foreground">
                 Updated: {formatTime(widget.weather.time)}
-              </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="timezone-toggle"
-                  checked={useLocalTime}
-                  onCheckedChange={setUseLocalTime}
-                />
-                <Label htmlFor="timezone-toggle">{useLocalTime ? 'DE Time' : 'GMT'}</Label>
               </div>
             </div>
           </div>
