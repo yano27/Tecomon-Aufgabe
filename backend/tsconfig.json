@@ -18,9 +18,9 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@controllers/*": ["controllers/*"],
-      "@models/*": ["models/*"],
-      "@services/*": ["services/*"]
+      // "@controllers/*": ["controllers/*"],
+      // "@models/*": ["models/*"],
+      // "@services/*": ["services/*"]
     },
 
     "emitDecoratorMetadata": true,

@@ -1,6 +1,6 @@
 import express from 'express';
 import widgetRoutes from './routes/widgets';
-import { errorHandler } from 'middlewares/errorHandler';
+import { errorHandler } from './middlewares/errorHandler';
 
 const app = express();
 

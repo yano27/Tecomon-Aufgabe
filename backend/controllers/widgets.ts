@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Widget } from '../models/Widget';
-import { getWeather } from '@services/weather';
+import { getWeather } from '../services/weather';
 
 // Get all widgets
 export const getWidgets = async (_req: Request, res: Response) => {

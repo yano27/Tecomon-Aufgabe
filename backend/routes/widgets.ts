@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { getWidgets, createWidget, deleteWidget, getWidgetWithWeather } from '../controllers/widgets';
-import { validateWidget } from 'validators/widget';
+import { validateWidget } from '../validators/widget';
 
 const router = Router();
 
