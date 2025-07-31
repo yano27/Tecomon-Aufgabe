@@ -1,70 +1,105 @@
-import { useState } from 'react';
+"use client";
 
-interface Props {
-  onAdd: (location: string) => void;
-}
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
+import { Label } from './ui/label';
+import { Loader2, Plus } from 'lucide-react';
 
 const LOCATIONS = ['berlin', 'hamburg', 'paris'];
 
-export default function AddWidgetForm({ onAdd }: Props) {
+interface AddWidgetFormProps {
+  onAdd: (location: string) => void;
+  isLoading?: boolean;
+}
+
+export function AddWidgetForm({ onAdd, isLoading }: AddWidgetFormProps) {
   const [location, setLocation] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (location) {
       onAdd(location);
       setLocation('');
-      setIsOpen(false);
+      setOpen(false);
     }
   };
 
   return (
-    <div className="mb-6">
-      {isOpen ? (
-        <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Location</label>
-              <select
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
-                required
-              >
-                <option value="">Select a location</option>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="gap-2">
+          <Plus className="h-4 w-4" />
+          Add Widget
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add Weather Widget</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="location" className="text-right">
+              Location
+            </Label>
+            <Select 
+              value={location} 
+              onValueChange={setLocation}
+              required
+            >
+              <SelectTrigger className="col-span-3">
+                <SelectValue placeholder="Select a location" />
+              </SelectTrigger>
+              <SelectContent>
                 {LOCATIONS.map((loc) => (
-                  <option key={loc} value={loc}>
+                  <SelectItem key={loc} value={loc}>
                     {loc.charAt(0).toUpperCase() + loc.slice(1)}
-                  </option>
+                  </SelectItem>
                 ))}
-              </select>
-            </div>
-            <div className="flex space-x-2">
-              <button
-                type="submit"
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                Add Widget
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-            </div>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="flex justify-end gap-2">
+            <Button 
+              variant="outline" 
+              type="button" 
+              onClick={() => setOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button 
+              type="submit" 
+              disabled={isLoading || !location}
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Adding...
+                </>
+              ) : (
+                'Add Widget'
+              )}
+            </Button>
           </div>
         </form>
-      ) : (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          + Add Widget
-        </button>
-      )}
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }

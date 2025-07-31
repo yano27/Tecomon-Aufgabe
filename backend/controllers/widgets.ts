@@ -58,7 +58,7 @@ export const getWidgetWithWeather = async (req: Request, res: Response) => {
     if (!widget) return res.status(404).json({ message: 'Widget not found' });
 
     const weather = await getWeather(widget.location);
-    res.json({ ...widget.toObject(), weather });
+    res.json({ ...widget.toObject(), ...weather });
   } catch (err) {
     res.status(500).json({ message: 'Error fetching weather data' });
   }
