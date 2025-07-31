@@ -13,12 +13,14 @@ export async function getWeather(location: string): Promise<WeatherData> {
   const cached = cache.get<WeatherData>(location);
   if (cached) return cached;
 
-  // Use Open-Meteo API (no key required)
+  const { lat, lon } = getCoordinates(location);
+
   const response = await axios.get(`https://api.open-meteo.com/v1/forecast`, {
     params: {
-      latitude: getCoordinates(location).lat,
-      longitude: getCoordinates(location).lon,
+      latitude: lat,
+      longitude: lon,
       current_weather: true,
+      timezone: 'auto',
     },
   });
 
