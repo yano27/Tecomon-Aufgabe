@@ -34,6 +34,7 @@ const WeatherIcon = ({ condition }: { condition?: string }) => {
     'Moderate snow': <Snowflake className="h-8 w-8 text-blue-300" />,
     'Heavy snow': <Snowflake className="h-8 w-8 text-blue-400" />,
     'Snow grains': <Snowflake className="h-8 w-8 text-blue-200" />,
+    'Slight rain showers': <CloudRain className="h-8 w-8 text-blue-400" />,
     'Rain showers': <CloudRain className="h-8 w-8 text-blue-400" />,
     Thunderstorm: <Bolt className="h-8 w-8 text-yellow-500" />,
     'Thunderstorm with hail': <Bolt className="h-8 w-8 text-yellow-600" />,
