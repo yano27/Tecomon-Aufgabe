@@ -2,6 +2,7 @@ import express from 'express';
 import widgetRoutes from './routes/widgets';
 import { errorHandler } from './middlewares/errorHandler';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 const app = express();
 
@@ -9,6 +10,13 @@ app.get('/', (_req, res) => {
   res.send('Backend is running');
 });
 
+// Enable CORS for all routes
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'DELETE'],
+  })
+);
 
 app.use(express.json());
 mongoose
