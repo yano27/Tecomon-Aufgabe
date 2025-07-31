@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { weatherCache } from '../cache/weatherCache';
+import { clearLocationCache, weatherCache } from '../cache/weatherCache';
+import { Widget } from '../models/Widget';
 
 interface WeatherData {
   temperature: number;
@@ -10,7 +11,8 @@ interface WeatherData {
 const CACHE_TTL = 300;
 
 export async function getWeather(location: string): Promise<WeatherData> {
-  const cachedData = weatherCache.get<WeatherData>(location);
+  const cacheKey = location.toLowerCase();
+  const cachedData = weatherCache.get<WeatherData>(cacheKey);
   if (cachedData) {
     console.log('Returning cached data for', location);
     return cachedData;
@@ -38,8 +40,26 @@ export async function getWeather(location: string): Promise<WeatherData> {
     return weatherData;
   } catch (error) {
     console.error('Weather API error:', error);
-    throw new Error('Failed to fetch weather');
+    weatherCache.set(location, { error: 'Service unavailable' }, 60);
+    throw error;
   }
+}
+
+export async function getWidgets() {
+  return Widget.find().sort({ createdAt: -1 });
+}
+
+export async function createWidget(location: string) {
+  const widget = new Widget({ location });
+  return await widget.save();
+}
+
+export async function deleteWidget(id: string) {
+  const widget = await Widget.findById(id);
+  if (!widget) return null;
+
+  clearLocationCache(widget.location);
+  return Widget.findByIdAndDelete(id);
 }
 
 // Helper functions

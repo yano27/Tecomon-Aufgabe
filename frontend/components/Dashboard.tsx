@@ -13,34 +13,52 @@ export default function Dashboard() {
   const [isAdding, setIsAdding] = useState(false);
 
   useEffect(() => {
+    let isMounted = true; // Track component mount state
+
     const loadData = async () => {
       try {
         const widgetsData = await fetchWidgets();
-        const widgetsWithWeather = await Promise.all(
-          widgetsData.map(async (widget) => ({
-            ...widget,
-            weather: await fetchWeather(widget._id),
-          }))
-        );
-        setWidgets(widgetsWithWeather);
+        if (isMounted) {
+          const widgetsWithWeather = await Promise.all(
+            widgetsData.map(async (widget) => {
+              try {
+                const weather = await fetchWeather(widget._id);
+                return { ...widget, weather };
+              } catch (error) {
+                console.error(`Failed to fetch weather for ${widget.location}:`, error);
+                return { ...widget };
+              }
+            })
+          );
+          setWidgets(widgetsWithWeather);
+        }
       } catch (error) {
-        toast.error('Failed to load widgets');
-        console.error('Failed to load widgets:', error);
+        if (isMounted) {
+          toast.error('Failed to load widgets');
+          console.error('Widget data fetch error:', error);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     loadData();
-    const interval = setInterval(loadData, 300000);
-    return () => clearInterval(interval);
+
+    // Set up 1-minute refresh
+    const interval = setInterval(loadData, 30000);
+
+    // Cleanup
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   const handleAddWidget = async (location: string) => {
     setIsAdding(true);
     try {
       const newWidget = await createWidget(location);
-      const weather = await fetchWeather(newWidget._id);
+      const weather = await fetchWeather(newWidget?._id);
       setWidgets([...widgets, { ...newWidget, weather }]);
       toast.success(`${location} widget added successfully`);
     } catch (error) {
