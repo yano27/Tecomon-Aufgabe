@@ -75,7 +75,11 @@ export default function Dashboard() {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Weather Dashboard</h1>
-          <AddWidgetForm onAdd={handleAddWidget} isLoading={isAdding} />
+          <AddWidgetForm
+            onAdd={handleAddWidget}
+            isLoading={isAdding}
+            usedLocations={widgets.map((w) => w.location)}
+          />
         </div>
 
         {widgets.length === 0 ? (

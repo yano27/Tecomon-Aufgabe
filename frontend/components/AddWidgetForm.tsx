@@ -22,11 +22,13 @@ const LOCATIONS = [
 interface AddWidgetFormProps {
   onAdd: (location: string) => void;
   isLoading?: boolean;
+  usedLocations: string[];
 }
 
-export function AddWidgetForm({ onAdd, isLoading }: AddWidgetFormProps) {
+export function AddWidgetForm({ onAdd, isLoading, usedLocations }: AddWidgetFormProps) {
   const [location, setLocation] = useState('');
   const [open, setOpen] = useState(false);
+  const availableLocations = LOCATIONS.filter((loc) => !usedLocations.includes(loc));
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,11 +63,14 @@ export function AddWidgetForm({ onAdd, isLoading }: AddWidgetFormProps) {
                 <SelectValue placeholder="Select a location" />
               </SelectTrigger>
               <SelectContent>
-                {LOCATIONS.map((loc) => (
+                {availableLocations.map((loc) => (
                   <SelectItem key={loc} value={loc}>
                     {loc.charAt(0).toUpperCase() + loc.slice(1)}
                   </SelectItem>
                 ))}
+                {availableLocations.length === 0 && (
+                  <p className="col-span-3 text-sm text-muted-foreground">All locations added.</p>
+                )}
               </SelectContent>
             </Select>
           </div>
