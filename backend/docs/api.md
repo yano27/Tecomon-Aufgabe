@@ -12,7 +12,7 @@ Create new widget
 
 ```json
 {
-  "location": "berlin|hamburg|paris"
+  "location": "berlin|hamburg|paris|jakarta|tokyo|new_york|karlsruhe|pforzheim|korntal-muenchingen"
 }
 ```
 

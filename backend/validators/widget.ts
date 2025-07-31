@@ -7,7 +7,17 @@ export const validateWidget = (req: Request, res: Response, next: NextFunction) 
     return res.status(400).json({ message: 'Invalid location' });
   }
 
-  const validLocations = ['berlin', 'hamburg', 'paris'];
+  const validLocations = [
+    'berlin',
+    'hamburg',
+    'paris',
+    'jakarta',
+    'tokyo',
+    'new_york',
+    'karlsruhe',
+    'pforzheim',
+    'korntal-muenchingen',
+  ];
   if (!validLocations.includes(location.toLowerCase())) {
     return res.status(400).json({
       message: 'Unsupported location',

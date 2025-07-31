@@ -38,6 +38,12 @@ function getCoordinates(location: string) {
     berlin: { lat: 52.52, lon: 13.41 },
     hamburg: { lat: 53.55, lon: 9.99 },
     paris: { lat: 48.85, lon: 2.35 },
+    jakarta: { lat: -6.21, lon: 106.85 },
+    tokyo: { lat: 35.68, lon: 139.76 },
+    new_york: { lat: 40.71, lon: -74.01 },
+    karlsruhe: { lat: 49.01, lon: 8.4 },
+    pforzheim: { lat: 48.89, lon: 8.7 },
+    'korntal-muenchingen': { lat: 48.83, lon: 9.1 },
   };
   return locations[location.toLowerCase()] || locations.berlin;
 }

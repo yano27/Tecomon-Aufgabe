@@ -1,25 +1,23 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from './ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Label } from './ui/label';
 import { Loader2, Plus } from 'lucide-react';
 
-const LOCATIONS = ['berlin', 'hamburg', 'paris'];
+const LOCATIONS = [
+  'berlin',
+  'hamburg',
+  'paris',
+  'jakarta',
+  'tokyo',
+  'new_york',
+  'karlsruhe',
+  'pforzheim',
+  'korntal-muenchingen',
+];
 
 interface AddWidgetFormProps {
   onAdd: (location: string) => void;
@@ -58,11 +56,7 @@ export function AddWidgetForm({ onAdd, isLoading }: AddWidgetFormProps) {
             <Label htmlFor="location" className="text-right">
               Location
             </Label>
-            <Select 
-              value={location} 
-              onValueChange={setLocation}
-              required
-            >
+            <Select value={location} onValueChange={setLocation} required>
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Select a location" />
               </SelectTrigger>
@@ -77,17 +71,10 @@ export function AddWidgetForm({ onAdd, isLoading }: AddWidgetFormProps) {
           </div>
 
           <div className="flex justify-end gap-2">
-            <Button 
-              variant="outline" 
-              type="button" 
-              onClick={() => setOpen(false)}
-            >
+            <Button variant="outline" type="button" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button 
-              type="submit" 
-              disabled={isLoading || !location}
-            >
+            <Button type="submit" disabled={isLoading || !location}>
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

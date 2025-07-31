@@ -4,55 +4,55 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: hsl(0 0% 100%);
-  --foreground: hsl(240 10% 3.9%);
-  --background-hover: hsl(0 0% 95%);
+  --background: hsl(218, 54%, 46%);
+  --foreground: hsl(0 0% 100%);
+  --background-hover: hsl(218 54% 52%);
 
-  --card: hsl(0 0% 100%);
-  --card-foreground: hsl(240 10% 3.9%);
+  --card: hsl(0 0% 100% / 0.05);
+  --card-foreground: hsl(0 0% 100%);
   --card-info: hsl(160 80% 96%);
   --card-info-foreground: hsl(160 80% 30%);
 
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(240 10% 3.9%);
+  --popover: hsl(218 54% 44%);
+  --popover-foreground: hsl(0 0% 100%);
 
-  --primary: hsl(160 100% 30%);
-  --primary-foreground: hsl(0 0% 98%);
+  --primary: hsl(160 100% 35%);
+  --primary-foreground: hsl(0 0% 100%);
 
-  --secondary: hsl(160 30% 96%);
-  --secondary-foreground: hsl(160 100% 25%);
-  --secondary-background: hsl(160 20% 94%);
+  --secondary: hsl(160 40% 92%);
+  --secondary-foreground: hsl(160 100% 20%);
+  --secondary-background: hsl(160 30% 85%);
 
-  --footer: hsl(160 30% 98%);
-  --footer-foreground: hsl(160 100% 25%);
+  --footer: hsl(218 54% 40%);
+  --footer-foreground: hsl(0 0% 100%);
 
-  --muted: hsl(160 10% 95%);
-  --muted-foreground: hsl(160 10% 18%);
+  --muted: hsl(218 54% 50%);
+  --muted-foreground: hsl(0 0% 90%);
 
-  --accent: hsl(160 60% 90%);
-  --accent-foreground: hsl(160 100% 30%);
+  --accent: hsl(160 60% 75%);
+  --accent-foreground: hsl(160 100% 20%);
 
-  --destructive: hsl(0 62% 50%);
+  --destructive: hsl(0 72% 45%);
   --destructive-foreground: hsl(0 0% 98%);
 
-  --border: hsl(160 10% 85%);
-  --input: hsl(160 10% 90%);
+  --border: hsl(0 0% 100% / 0.1);
+  --input: hsl(0 0% 100% / 0.05);
 
   --ring: hsl(160 60% 60%);
   --radius: 0.3rem;
 
-  --sidebar: hsl(160 100% 25%);
-  --sidebar-linear-start: hsl(160 100% 25%);
-  --sidebar-linear-end: hsl(160 100% 30%);
+  --sidebar: hsl(218 54% 42%);
+  --sidebar-linear-start: hsl(218 54% 46%);
+  --sidebar-linear-end: hsl(218 54% 40%);
   --sidebar-foreground: hsl(0 0% 100%);
 
   --highlight: hsl(160 80% 90%);
   --highlight-hover: hsl(160 80% 85%);
   --sidebar-primary: hsl(160 100% 30%);
   --sidebar-primary-foreground: hsl(0 0% 98%);
-  --sidebar-accent: hsl(160 30% 96%);
-  --sidebar-accent-foreground: hsl(160 100% 30%);
-  --sidebar-border: hsl(160 10% 85%);
+  --sidebar-accent: hsl(160 40% 92%);
+  --sidebar-accent-foreground: hsl(160 100% 20%);
+  --sidebar-border: hsl(0 0% 100% / 0.08);
   --sidebar-ring: hsl(160 60% 60%);
 
   --cmdk-list-height: 500px;
